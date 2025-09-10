@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Index Page</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f9;
+      font-family: Arial, sans-serif;
+    }
+
+    a {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      transition: background 0.3s ease;
+    }
+
+    a:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <a href="#" id="openIndex">Open Index Page</a>
+
+  <script>
+    document.getElementById("openIndex").addEventListener("click", function (event) {
+      event.preventDefault();
+      window.open("index.html", "_blank", "width=800,height=600");
+    });
+  </script>
+</body>
+</html>
