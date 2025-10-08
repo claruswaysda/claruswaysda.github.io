@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student List — Add Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0f1724; /* deep navy */
+      --card: #0b1220;
+      --accent: #6ee7b7; /* mint */
+      --muted: #98a0b3;
+      --glass: rgba(255,255,255,0.03);
+      --success: #16a34a;
+      --danger: #ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: linear-gradient(180deg, #061022 0%, #07142a 60%);
+      color:#e6eef8;
+      min-height:100vh;
+      padding:32px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .container{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:24px;
+      box-shadow: 0 8px 30px rgba(3,8,23,0.6);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .logo{
+      width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:flex;align-items:center;justify-content:center;font-weight:700;color:#04202a;font-size:18px;box-shadow:0 6px 18px rgba(99,102,241,0.08);
+    }
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+
+    .layout{display:grid;grid-template-columns:420px 1fr;gap:20px;margin-top:18px}
+
+    .card{
+      background:var(--card);
+      border-radius:12px;padding:16px;border:1px solid var(--glass);
+    }
+
+    form .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+    input, select{
+      width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit;font-size:14px;
+      outline:none;transition:all .15s ease;
+    }
+    input:focus{box-shadow:0 6px 18px rgba(99,102,241,0.06);transform:translateY(-1px)}
+
+    .actions{display:flex;gap:8px;margin-top:8px}
+    button{cursor:pointer;padding:10px 12px;border-radius:10px;border:0;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#60a5fa);color:#04202a}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .btn-danger{background:var(--danger);color:white}
+
+    .list-controls{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .search{flex:1;margin-right:10px}
+    .search input{width:100%;padding:10px;border-radius:10px}
+
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    thead th{text-align:left;padding:12px 10px;color:var(--muted);font-weight:600;font-size:12px}
+    tbody td{padding:12px 10px;border-top:1px dashed rgba(255,255,255,0.02)}
+
+    .badge{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.03);color:var(--muted)}
+    .controls button{margin-right:6px}
+
+    .empty{opacity:0.8;color:var(--muted);padding:28px;text-align:center}
+
+    @media (max-width:880px){
+      .layout{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">STU</div>
+      <div>
+        <h1>Student registry</h1>
+        <p class="lead">Add students with five fields, edit, remove or persist them locally</p>
+      </div>
+    </header>
+
+    <div class="layout">
+      <div class="card">
+        <form id="studentForm">
+          <div class="row">
+            <div>
+              <label for="name">Full name</label>
+              <input id="name" required minlength="2" placeholder="e.g. Jane Doe" />
+            </div>
+            <div>
+              <label for="studentId">Student ID</label>
+              <input id="studentId" required placeholder="e.g. S12345" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="email">Email</label>
+              <input id="email" type="email" required placeholder="e.g. jane@example.com" />
+            </div>
+            <div>
+              <label for="course">Course</label>
+              <input id="course" required placeholder="e.g. Physics 101" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:10px">
+            <label for="grade">Grade</label>
+            <select id="grade" required>
+              <option value="">Select grade</option>
+              <option>A+</option>
+              <option>A</option>
+              <option>B+</option>
+              <option>B</option>
+              <option>C</option>
+              <option>F</option>
+            </select>
+          </div>
+
+          <div class="actions">
+            <button class="btn-primary" id="submitBtn">Add student</button>
+            <button type="button" class="btn-ghost" id="clearBtn">Clear fields</button>
+            <button type="button" class="btn-ghost" id="exportBtn">Export JSON</button>
+            <button type="button" class="btn-danger" id="clearAll">Clear all</button>
+          </div>
+        </form>
+
+        <div style="margin-top:12px;font-size:13px;color:var(--muted)">Tip: click edit to update a student. Data is stored in your browser.</div>
+      </div>
+
+      <div class="card">
+        <div class="list-controls">
+          <div style="display:flex;gap:8px;flex:1">
+            <div class="search"><input id="q" placeholder="Search by name id email or course" /></div>
+            <select id="sort">
+              <option value="new">Newest first</option>
+              <option value="old">Oldest first</option>
+              <option value="name">Name A→Z</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="badge" id="count">0 students</div>
+          </div>
+        </div>
+
+        <div id="listWrap">
+          <div class="empty">No students yet — add one using the form on the left</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // simple student manager
+    const form = document.getElementById('studentForm');
+    const nameI = document.getElementById('name');
+    const idI = document.getElementById('studentId');
+    const emailI = document.getElementById('email');
+    const courseI = document.getElementById('course');
+    const gradeI = document.getElementById('grade');
+    const listWrap = document.getElementById('listWrap');
+    const q = document.getElementById('q');
+    const sort = document.getElementById('sort');
+    const count = document.getElementById('count');
+
+    let students = JSON.parse(localStorage.getItem('students_v1') || '[]');
+    let editIndex = -1;
+
+    function save(){
+      localStorage.setItem('students_v1', JSON.stringify(students));
+      render();
+    }
+
+    function uid(){return 's'+Math.random().toString(36).slice(2,9)}
+
+    function clearForm(){
+      form.reset(); editIndex = -1; document.getElementById('submitBtn').textContent='Add student';
+    }
+
+    function render(){
+      let filtered = students.slice();
+      const qv = q.value.trim().toLowerCase();
+      if(qv) filtered = filtered.filter(s => (s.name+s.id+s.email+s.course).toLowerCase().includes(qv));
+
+      if(sort.value==='new') filtered = filtered.slice().reverse();
+      if(sort.value==='name') filtered = filtered.slice().sort((a,b)=>a.name.localeCompare(b.name));
+
+      count.textContent = students.length + (students.length===1? ' student':' students');
+
+      if(!filtered.length){
+        listWrap.innerHTML = '<div class="empty">No students to show</div>';
+        return
+      }
+
+      const rows = ['<table><thead><tr><th>Name</th><th>ID</th><th>Email</th><th>Course</th><th>Grade</th><th>Actions</th></tr></thead><tbody>'];
+      filtered.forEach((s, idx)=>{
+        rows.push(`<tr data-idx="${idx}"><td>${escapeHtml(s.name)}</td><td>${escapeHtml(s.id)}</td><td>${escapeHtml(s.email)}</td><td>${escapeHtml(s.course)}</td><td><span class=\"badge\">${escapeHtml(s.grade)}</span></td><td class="controls"><button data-action=\"edit\">Edit</button><button data-action=\"del\">Delete</button></td></tr>`);
+      });
+      rows.push('</tbody></table>');
+      listWrap.innerHTML = rows.join('');
+
+      // attach delegates
+      listWrap.querySelectorAll('button[data-action]').forEach(btn=>{
+        btn.addEventListener('click', e=>{
+          const tr = e.target.closest('tr');
+          const displayedIndex = Number(tr.dataset.idx);
+          // map displayed index back to original array considering filters and sort
+          const mapped = mapDisplayedToOriginal(displayedIndex);
+          if(e.target.dataset.action==='edit') startEdit(mapped);
+          if(e.target.dataset.action==='del') removeStudent(mapped);
+        })
+      })
+    }
+
+    function mapDisplayedToOriginal(displayedIndex){
+      // recompute same filtered array then map to original position by id
+      const qv = q.value.trim().toLowerCase();
+      let filtered = students.slice();
+      if(qv) filtered = filtered.filter(s => (s.name+s.id+s.email+s.course).toLowerCase().includes(qv));
+      if(sort.value==='new') filtered = filtered.slice().reverse();
+      if(sort.value==='name') filtered = filtered.slice().sort((a,b)=>a.name.localeCompare(b.name));
+      const sid = filtered[displayedIndex].sid;
+      return students.findIndex(s=>s.sid===sid);
+    }
+
+    function startEdit(index){
+      const s = students[index];
+      nameI.value = s.name; idI.value = s.id; emailI.value = s.email; courseI.value = s.course; gradeI.value = s.grade;
+      editIndex = index; document.getElementById('submitBtn').textContent='Save changes';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function removeStudent(index){
+      if(!confirm('Remove this student?')) return;
+      students.splice(index,1); save();
+    }
+
+    function escapeHtml(str){
+      return (''+str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[m]);
+    }
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      // validation
+      const name = nameI.value.trim();
+      const sid = idI.value.trim();
+      const email = emailI.value.trim();
+      const course = courseI.value.trim();
+      const grade = gradeI.value;
+
+      if(!name || !sid || !email || !course || !grade){
+        alert('Please fill all fields'); return;
+      }
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!emailRe.test(email)){ alert('Please enter a valid email'); return }
+
+      if(editIndex>-1){
+        students[editIndex] = {...students[editIndex], name, id: sid, email, course, grade};
+      } else {
+        students.push({sid: uid(), name, id: sid, email, course, grade, created:Date.now()});
+      }
+      save(); clearForm();
+    })
+
+    document.getElementById('clearBtn').addEventListener('click', clearForm);
+    document.getElementById('clearAll').addEventListener('click', ()=>{
+      if(!confirm('Delete all students? This cannot be undone.')) return;
+      students = []; save();
+    });
+    document.getElementById('exportBtn').addEventListener('click', ()=>{
+      const blob = new Blob([JSON.stringify(students, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'students.json'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    q.addEventListener('input', ()=>render());
+    sort.addEventListener('change', ()=>render());
+
+    // init
+    render();
+  </script>
+</body>
+</html>
